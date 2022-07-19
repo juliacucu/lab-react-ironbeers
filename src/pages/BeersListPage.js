@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";     // <== IMPORT useEffect
-import axios from "axios";                       // <== IMPORT axios
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Header from "../components/Header";
+import { Link } from "react-router-dom";
+
  
 function BeersListPage() {
   const [beers, setBeers] = useState([]);
  
-  useEffect(() => {                                // <== ADD THE EFFECT
+  useEffect(() => {
     axios
       .get("https://ih-beers-api2.herokuapp.com/beers")
       .then((response) => {
@@ -12,20 +15,21 @@ function BeersListPage() {
         setBeers(response.data)
       });
     
-  }, [] );  // <- [] means: Run the effect only once, after initial render
- 
+  }, [] );
   
   return (
     <div>
+      <Header/>
       <h3>List of Beers</h3>
- 
-      {/*      ADD     */}
       {beers.map((beer) => (
+        <Link to={`/beers/${beer._id}`}>
         <div key={beer._id} className="card">
-          <img src={beer.img} alt="apartment" />
-          <h3>{beer.title}</h3>
-          <p>Price: {beer.pricePerDay}</p>
+          <img src={beer.image_url} />
+          <h4>{beer.name}</h4>
+          <h5>{beer.tagline}</h5>
+          <p><b>Created by:</b> {beer.contributed_by}</p>
         </div>
+        </Link>
       ))}
       
     </div>
